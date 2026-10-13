@@ -1,0 +1,58 @@
+# TWRP partition table for the Samsung Galaxy A13 (SM-A137F, a13ve, MT6768).
+# Block device names verified against the stock first-stage fstab of A137FXXSCEZB1.
+
+# Mount point       FS      Device                                    Flags
+
+# Boot chain
+/boot               emmc    /dev/block/by-name/boot                   flags=backup=1;display="Boot";flashimg=1
+/recovery           emmc    /dev/block/by-name/recovery               flags=backup=1;display="Recovery";flashimg=1
+/dtbo               emmc    /dev/block/by-name/dtbo                   flags=backup=1;display="DTBO";flashimg=1
+/vbmeta             emmc    /dev/block/by-name/vbmeta                 flags=backup=1;display="Vbmeta";flashimg=1
+/vbmeta_system      emmc    /dev/block/by-name/vbmeta_system          flags=backup=1;display="Vbmeta System";flashimg=1
+/vbmeta_vendor      emmc    /dev/block/by-name/vbmeta_vendor          flags=backup=1;display="Vbmeta Vendor";flashimg=1
+/vbmeta_samsung     emmc    /dev/block/by-name/vbmeta_samsung         flags=backup=1;display="Vbmeta Samsung";flashimg=1
+
+# Dynamic partitions
+/system             f2fs    /dev/block/mapper/system                  flags=backup=1;display="System-f2fs";logical
+/system             ext4    /dev/block/mapper/system                  flags=backup=1;display="System-ext4";logical
+/system             erofs   /dev/block/mapper/system                  flags=backup=1;display="System-erofs";logical
+/system_image       emmc    /dev/block/mapper/system                  flags=backup=1;display="System Image";flashimg=1;wipeingui
+/system_ext         f2fs    /dev/block/mapper/system_ext              flags=backup=1;display="System_ext";logical
+/system_ext_image   emmc    /dev/block/mapper/system_ext              flags=backup=1;display="System_ext Image";flashimg=1;wipeingui
+/vendor             f2fs    /dev/block/mapper/vendor                  flags=backup=1;display="Vendor";logical
+/vendor_image       emmc    /dev/block/mapper/vendor                  flags=backup=1;display="Vendor Image";flashimg=1;wipeingui
+/product            f2fs    /dev/block/mapper/product                 flags=backup=1;display="Product";logical
+/product_image      emmc    /dev/block/mapper/product                 flags=backup=1;display="Product Image";flashimg=1;wipeingui
+/odm                f2fs    /dev/block/mapper/odm                     flags=backup=1;display="ODM";logical
+/odm_image          emmc    /dev/block/mapper/odm                     flags=backup=1;display="ODM Image";flashimg=1;wipeingui
+
+# Data
+/metadata           ext4    /dev/block/by-name/md_udc                 flags=wipeingui;display="Metadata"
+/data               f2fs    /dev/block/by-name/userdata               flags=encryptable=aes-256-xts:aes-256-cts:v2;keydirectory=/metadata/vold/metadata_encryption;backup=1
+/cache              ext4    /dev/block/by-name/cache                  flags=display="Cache";wipeingui
+
+# Samsung partitions worth backing up
+/efs                ext4    /dev/block/by-name/efs                    flags=backup=1;display="EFS"
+/sec_efs            ext4    /dev/block/by-name/sec_efs                flags=backup=1;subpartitionof=/efs
+/nvram              emmc    /dev/block/by-name/nvram                  flags=backup=1;display="NVRAM (IMEI/MAC)"
+/nvdata             ext4    /dev/block/by-name/nvdata                 flags=backup=1;subpartitionof=/nvram
+/nvcfg              ext4    /dev/block/by-name/nvcfg                  flags=backup=1;subpartitionof=/nvram
+/persistent         emmc    /dev/block/by-name/frp                    flags=backup=1;subpartitionof=/nvram
+/md1img             emmc    /dev/block/by-name/md1img                 flags=backup=1;display="Baseband (md1img)"
+/optics             ext4    /dev/block/by-name/optics                 flags=backup=1;display="Optics"
+/optics_image       emmc    /dev/block/by-name/optics                 flags=backup=1;display="Optics Image";flashimg=1
+/prism              ext4    /dev/block/by-name/prism                  flags=backup=1;display="Prism"
+/prism_image        emmc    /dev/block/by-name/prism                  flags=backup=1;display="Prism Image";flashimg=1
+/param              emmc    /dev/block/by-name/param                  flags=backup=1;display="Param"
+/up_param           emmc    /dev/block/by-name/up_param               flags=backup=1;display="Up_Param";flashimg=1
+/misc               emmc    /dev/block/by-name/misc                   flags=backup=1;display="Misc"
+
+# MediaTek firmware partitions (backup only)
+/spmfw              emmc    /dev/block/by-name/spmfw                  flags=backup=1;display="SPM firmware"
+/scp1               emmc    /dev/block/by-name/scp1                   flags=backup=1;display="SCP firmware"
+/sspm_1             emmc    /dev/block/by-name/sspm_1                 flags=backup=1;display="SSPM firmware"
+/gz1                emmc    /dev/block/by-name/gz1                    flags=backup=1;display="GenieZone"
+
+# External storage
+/external_sd        vfat    /dev/block/mmcblk1p1    /dev/block/mmcblk1   flags=display="Micro SD Card";storage;wipeingui;removable
+/usb_otg            auto    /dev/block/sda1         /dev/block/sda       flags=display="USB OTG";storage;wipeingui;removable
