@@ -116,11 +116,15 @@ TARGET_USES_MKE2FS := true
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_NO_EXFAT_FUSE := true
-TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_NTFS_3G := false
 
 # Recovery root
 BOARD_ROOT_EXTRA_FOLDERS := cache carrier data_mirror efs keyrefuge linkerconfig metadata omr optics prism spu
 BOARD_SUPPRESS_SECURE_ERASE := true
+
+# The recovery partition is only 32 MiB; compress the ramdisk with LZMA
+BOARD_RAMDISK_USE_LZMA := true
+LZMA_RAMDISK_TARGETS := recovery
 
 # Android Verified Boot: bootloader is unlocked, images are not signed
 BOARD_AVB_ENABLE := false
@@ -148,9 +152,15 @@ TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
 
 # TWRP
-TW_EXTRA_LANGUAGES := true
-TW_ENABLE_ALL_PARTITION_TOOLS := true
+TW_DEVICE_VERSION := der-meddler
+TW_EXTRA_LANGUAGES := false
 TW_EXCLUDE_TWRPAPP := true
+TW_EXCLUDE_TZDATA := true
+TW_EXCLUDE_SUPERSU := true
+TW_EXCLUDE_PYTHON := true
+TW_INCLUDE_FB2PNG := false
+TW_INCLUDE_DUMLOCK := false
+TW_INCLUDE_INJECTTWRP := false
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LIBRESETPROP := true
 TW_BACKUP_EXCLUSIONS := /data/fonts
