@@ -1,21 +1,27 @@
 #
 # Copyright (C) 2026 The Android Open Source Project
-# Copyright (C) 2026 SebaUbuntu's TWRP device tree generator
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
+DEVICE_PATH := device/samsung/a13ve
+
+# Release name
+PRODUCT_RELEASE_NAME := a13ve
+
 # Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 
-# Inherit some common Omni stuff.
-$(call inherit-product, vendor/omni/config/common.mk)
+# Inherit some common TWRP stuff.
+$(call inherit-product-if-exists, vendor/twrp/config/common.mk)
 
-# Inherit from a13ve device
-$(call inherit-product, device/samsung/a13ve/device.mk)
+# Inherit device configuration
+$(call inherit-product, $(DEVICE_PATH)/device.mk)
 
+## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := a13ve
-PRODUCT_NAME := omni_a13ve
+PRODUCT_NAME := twrp_a13ve
 PRODUCT_BRAND := samsung
 PRODUCT_MODEL := SM-A137F
 PRODUCT_MANUFACTURER := samsung
