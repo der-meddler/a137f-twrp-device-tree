@@ -1,16 +1,17 @@
 # Samsung's bootloader refuses images without the SEANDROIDENFORCE footer,
 # and Odin flashes recovery from a tar archive. The default mkbootimg from
-# the build tree is used; INTERNAL_*IMAGE_ARGS come from build/core/Makefile.
+# the build tree is used; INTERNAL_*IMAGE_ARGS and recoveryimage-deps come
+# from build/core/Makefile, which includes this file after defining them.
 
 FLASH_IMAGE_TARGET ?= $(PRODUCT_OUT)/recovery.tar
 
-$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(BOOTIMAGE_EXTRA_DEPS)
+$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(INSTALLED_DTBIMAGE_TARGET)
 	$(call pretty,"Target boot image: $@")
 	$(hide) $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
 	$(hide) echo -n "SEANDROIDENFORCE" >> $@
 	@echo "Made boot image: $@"
 
-$(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) $(recovery_ramdisk) $(recovery_kernel) $(RECOVERYIMAGE_EXTRA_DEPS)
+$(INSTALLED_RECOVERYIMAGE_TARGET): $(recoveryimage-deps)
 	@echo "----- Making recovery image ------"
 	$(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
 	@echo "----- Lying about SEAndroid state to Samsung bootloader ------"
