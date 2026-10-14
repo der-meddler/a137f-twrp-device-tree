@@ -61,9 +61,12 @@ adb shell 'cat /proc/cmdline; getenforce; cat /proc/version'
 
 - Size budget is tight: the ramdisk is LZMA-compressed and NTFS, extra
   languages, tzdata, nano, Python and SuperSU are excluded.
-- The touchscreen stops responding after the panel was off once;
-  `recovery/root/sbin/tsp_touch_fix.sh` resets the controller on power-key
-  release.
+- The touch controller (Himax HX83112F, zero-flash, in-cell) needs the
+  display on/off events Android's display stack sends through
+  `/sys/class/sec/tsp/enabled`; TWRP never sends them, so touch dies after
+  the first screen-off. `recovery/root/sbin/tsp_touch_fix.sh` sends them on
+  power-key release (off pair when the panel is dark, off+on pairs when it
+  is lit) and once after boot. Touch is back about 1.7 s after a wake.
 - `/data` decryption (FBE v2 with metadata encryption) is not implemented.
   `TW_INCLUDE_CRYPTO` is unset; the fstab flags are kept for reference.
 - Official TWRP page: <https://twrp.me/samsung/A13ve.html>.
