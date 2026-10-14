@@ -3,8 +3,6 @@
 # init.recovery.samsung.rc, merged into one file.
 
 on init
-    setprop sys.usb.configfs 1
-
     # Samsung keeps EFS under /mnt/vendor/efs; TWRP mounts it at /efs
     rm /efs
     mkdir /efs
