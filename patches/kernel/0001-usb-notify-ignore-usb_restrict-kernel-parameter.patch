@@ -1,0 +1,46 @@
+From: der-meddler <njilasalexander36@gmail.com>
+Date: Wed, 14 Oct 2026 05:00:00 +0200
+Subject: [PATCH] usb: notify: ignore the usb_restrict kernel parameter
+
+Samsung's bootloader appends "usb_notify_layer.usb_restrict=1" to the
+kernel command line when it boots the recovery partition. With the stock
+code the USB notify layer then refuses every USB event ("usb restrict
+param is set, disable all USB operations", is_blocked() always true), so
+the gadget binds to musb-hdrc but never connects: no adb, no MTP, no
+sideload in TWRP.
+
+Drop the two checks. physwizz's A137F recovery kernels carry the same
+change, which is why official TWRP builds for a13ve have working USB.
+
+Signed-off-by: der-meddler <njilasalexander36@gmail.com>
+---
+ drivers/usb/notify/usb_notify.c | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/drivers/usb/notify/usb_notify.c b/drivers/usb/notify/usb_notify.c
+--- a/drivers/usb/notify/usb_notify.c
++++ b/drivers/usb/notify/usb_notify.c
+@@ -794,11 +794,6 @@ static void reserve_state_check(struct work_struct *work)
+ 
+ 	pr_info("%s +\n", __func__);
+ 
+-	if (usb_restrict == 1) {
+-		pr_info("%s usb restrict param is set, disable all USB operations\n", __func__);
+-		return;
+-	}
+-
+ #ifndef CONFIG_DISABLE_LOCKSCREEN_USB_RESTRICTION
+ 	wait_event_interruptible(u_noti->init_delay,
+ 		(u_noti->lock_state != USB_NOTIFY_INIT_STATE
+@@ -2651,11 +2646,6 @@ bool is_blocked(struct otg_notify *n, int type)
+ 	struct usb_notify *u_notify = NULL;
+ 	int ret = 0;
+ 
+-	if (usb_restrict == 1) {
+-		pr_info("%s cause:usb_restrict\n", __func__);
+-		goto end2;
+-	}
+-
+ 	if (!n) {
+ 		pr_err("%s otg_notify is null\n", __func__);
+ 		goto end;

@@ -41,6 +41,12 @@ boot image; the build assembles `dtb.img` from that directory). A recovery kerne
 - `CONFIG_SECURITY_SELINUX_DEVELOP=y`, f2fs with encryption, inline crypto,
   USB configfs (adb, MTP), overlayfs. Samsung's `a13ve_defconfig` has them.
 - `CONFIG_IKCONFIG_PROC=y` is handy: `zcat /proc/config.gz` works in TWRP.
+- `CONFIG_RD_LZMA=y`: the ramdisk is LZMA-compressed.
+- **`patches/kernel/0001-usb-notify-ignore-usb_restrict-kernel-parameter.patch`
+  must be applied.** Samsung's bootloader passes
+  `usb_notify_layer.usb_restrict=1` when booting recovery, and the stock
+  USB notify layer then blocks the gadget entirely: no adb, MTP or
+  sideload. physwizz's kernels carry the same removal.
 
 Verify a new kernel booted the right way from TWRP:
 
