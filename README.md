@@ -41,7 +41,10 @@ boot image; the build assembles `dtb.img` from that directory). A recovery kerne
 - `CONFIG_SECURITY_SELINUX_DEVELOP=y`, f2fs with encryption, inline crypto,
   USB configfs (adb, MTP), overlayfs. Samsung's `a13ve_defconfig` has them.
 - `CONFIG_IKCONFIG_PROC=y` is handy: `zcat /proc/config.gz` works in TWRP.
-- `CONFIG_RD_LZMA=y`: the ramdisk is LZMA-compressed.
+- `CONFIG_RD_LZMA=y`: the ramdisk is LZMA-compressed. The validated recovery
+  kernel is Samsung's plain `a13ve_defconfig` plus `patches/kernel/recovery.config`
+  (two lines); copy that fragment into `arch/arm64/configs/` and run
+  `make a13ve_defconfig recovery.config`.
 - **`patches/kernel/0001-usb-notify-ignore-usb_restrict-kernel-parameter.patch`
   must be applied.** Samsung's bootloader passes
   `usb_notify_layer.usb_restrict=1` when booting recovery, and the stock
