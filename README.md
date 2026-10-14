@@ -18,7 +18,7 @@ maintains in [TeamWin/android_device_samsung_a13ve](https://github.com/TeamWin/a
 ```bash
 repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
 repo sync -c -j"$(nproc)" --force-sync --no-clone-bundle --no-tags
-git clone <this repo> device/samsung/a13ve
+git clone -b android-12.1 git@github.com:der-meddler/a137f-twrp-device-tree.git device/samsung/a13ve
 source build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
 lunch twrp_a13ve-eng
