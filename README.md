@@ -32,8 +32,8 @@ bootloader expects. The bootloader must be unlocked.
 ## Kernel
 
 The build does not compile a kernel. Drop a gzip-compressed `Image.gz` into
-`prebuilt/` and keep `prebuilt/dtb.img` (stock dtb, also found in the stock
-boot image). A recovery kernel for this device needs:
+`prebuilt/` and keep `prebuilt/dtb/a13ve.dtb` (stock dtb, also found in the stock
+boot image; the build assembles `dtb.img` from that directory). A recovery kernel for this device needs:
 
 - `CONFIG_CMDLINE_FROM_BOOTLOADER=y` (no `CMDLINE_FORCE`): SELinux is set
   permissive through `androidboot.selinux=permissive` in the recovery image
